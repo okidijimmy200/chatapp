@@ -1,3 +1,4 @@
+from ast import arg
 import io
 import sys
 from unittest import mock
@@ -49,8 +50,18 @@ def test_consumer(mock_consumer):
     'group.id': 'mygroup',
     'auto.offset.reset': 'beginning'
     }
+    channel = ['test', 'work', 1]
+
     mock_consumer(test)
-    args = mock_consumer.call_args
-    assert type(args) == dict
+    mock_consumer.subscribe([channel])
+    mock_consumer.poll(1.0)
+
+    consumer = mock_consumer.call_args.args
+    subscribe = mock_consumer.subscribe.call_args.args
+    poll = mock_consumer.poll.call_args.args
+
+    assert type(*consumer) == dict
+    assert type(*subscribe) == list
+    assert type(*poll) == float
 
 
