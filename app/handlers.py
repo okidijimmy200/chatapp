@@ -78,8 +78,7 @@ def subscriber(channel, start_from, server, group):
         if msg.error():
             print("Consumer error: {}".format(msg.error()))
             continue
-
-        print('Received message: {}'.format(msg.value()))
-    # x = c.close()
+        print('Received message: {}'.format(msg.value().decode('utf-8')))
+    x = c.close()
     return x
 
