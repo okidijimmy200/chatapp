@@ -51,7 +51,7 @@ def parse_args():
         print("System exit error.")
 
 '''producer'''
-def publisher(channel, server, group):
+def publisher(channel, server, group=None):
     p = Producer({'bootstrap.servers': server})
     x = write_message()
     p.poll(0)

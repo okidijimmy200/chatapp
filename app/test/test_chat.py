@@ -5,7 +5,8 @@ from unittest import mock
 from app.handlers import  (
     write_message,
     parse_args,
-    delivery_report
+    delivery_report,
+    publisher
 ) 
 
 '''test input from user'''
@@ -22,6 +23,19 @@ def test_parse_args():
     result = parse_args()
     assert result.channel == 'mytopic'
     assert result.server == 'localhost:9092'
+    assert result.group == 'mygroup'
+
+'''test systen receive'''
+def test_parse_args_recieve():
+    # test coverage highlighter
+    cmd = 'main.py receive --channel mytopic --start_from beginning --server localhost:9092 --group mygroup'
+    
+    sys.argv = cmd.split(' ')
+    result = parse_args()
+    assert result.channel == 'mytopic'
+    assert result.server == 'localhost:9092'
+    assert result.group == 'mygroup'
+
 
 '''test delivery report'''
 def test_delivery_report():
@@ -33,14 +47,21 @@ def test_delivery_report():
 def test_publisher(mock_producer, monkeypatch):
     monkeypatch.setattr('sys.stdin', io.StringIO('my test data input'))
     i = write_message()
-    # call the mock_producer function
-    mock_producer()
-    mock_producer.assert_called()
-    mock_producer.polls(0)
-    mock_producer.produce('mytopic', i, callback=delivery_report)
-    mock_producer.flush()
-    mock_producer.polls.assert_called_with(0)
-    mock_producer.produce.assert_called()
+
+    p = mock_producer({'bootstrap.servers':'localhost:9092'})
+    p.producer('mychannel', i, callback=delivery_report)
+
+    p.flush.return_value= 'Test value'
+
+    # call publisher here
+    result = publisher(channel='mychannel', server='localhost:9092')
+
+    mock_producer.assert_called_with({'bootstrap.servers':'localhost:9092'})
+    p.poll.assert_called_with(0)
+    p.flush.assert_called
+    p.producer.assert_called_with('mychannel', i, callback=delivery_report)
+    assert result == 'Test value'
+    
 
 @mock.patch('app.handlers.Consumer')
 def test_consumer(mock_consumer):
