@@ -12,5 +12,3 @@ if arg_command == 'send':
 
 elif arg_command == 'receive':
     subscriber(channel=args.channel, start_from=args.start_from, server=args.server, group=args.group)
-
-

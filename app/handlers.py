@@ -1,4 +1,6 @@
 import sys
+import time
+import multiprocessing
 import argparse
 from confluent_kafka import Producer, Consumer
 
@@ -53,15 +55,16 @@ def parse_args():
 '''producer'''
 def publisher(channel, server, group=None):
     p = Producer({'bootstrap.servers': server})
-    x = write_message()
+    # x = write_message()
     p.poll(0)
-    p.produce(channel, x, callback=delivery_report)
+    p.produce(channel, 'test message', callback=delivery_report)
         
     result = p.flush()
     return result
 
-'''consumer'''
-def subscriber(channel, start_from, server, group):
+
+
+def subscriber(channel, start_from, server, group, running):
     c = Consumer({
     'bootstrap.servers': server,
     'group.id': group,
@@ -70,7 +73,8 @@ def subscriber(channel, start_from, server, group):
 
     c.subscribe([channel])
 
-    while True:
+  
+    while running['running']:
         msg = c.poll(1.0)
 
         if msg is None:
@@ -78,7 +82,7 @@ def subscriber(channel, start_from, server, group):
         if msg.error():
             print("Consumer error: {}".format(msg.error()))
             continue
-        print('Received message: {}'.format(msg.value().decode('utf-8')))
-    x = c.close()
-    return x
+        print('Received message: {}'.format(msg.value()))
+        # return msg
+
 
