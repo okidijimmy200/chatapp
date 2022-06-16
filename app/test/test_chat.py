@@ -64,7 +64,7 @@ def test_publisher(mock_producer, monkeypatch):
     mock_producer.poll.assert_called_with(0)
     mock_producer.producer.assert_called_with('mychannel', i, callback=delivery_report)
  
-
+'''test consumer'''
 @mock.patch('handlers.Consumer')
 def test_consumer_error(mock_consumer, capsys):
 
