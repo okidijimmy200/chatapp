@@ -1,4 +1,3 @@
-from cgitb import reset
 import time
 import threading
 import io
@@ -69,7 +68,7 @@ def test_publisher(mock_producer, monkeypatch):
 def test_consumer_error(mock_consumer, capsys):
 
     mock_consumer().poll().error.return_value = 'test error'
-    mock_consumer().poll().value.return_value = 'test message'
+    mock_consumer().poll().value.return_value = 'test message 3'
     def switch(running):
         time.sleep(.001)
         running['running'] = False
