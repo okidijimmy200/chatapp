@@ -80,6 +80,7 @@ def subscriber(channel, start_from, server, group, running=None):
         if msg.error():
             print("Consumer error: {}".format(msg.error()))
             continue
-        print('Received message: {}'.format(msg.value()))
+        else:
+            print('Received message: {}'.format(msg.value()))
 
 
