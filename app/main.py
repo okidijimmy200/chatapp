@@ -24,3 +24,4 @@ elif arg_command == 'receive':
     )
     p.start()
     subscriber(channel=args.channel, start_from=args.start_from, server=args.server, group=args.group, running=running)
+''
