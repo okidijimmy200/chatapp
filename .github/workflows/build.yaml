@@ -23,6 +23,7 @@ jobs:
     - name: kafka
       run: |
         sudo apt-get update -y
+        sudo apt install build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev wget
         sudo apt-get install -y librdkafka-dev
     - name: Install dependencies
       run: |
