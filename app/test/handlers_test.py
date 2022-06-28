@@ -67,13 +67,10 @@ def test_publisher(mock_producer, monkeypatch):
 '''test consumer'''
 @mock.patch('handlers.Consumer')
 def test_consumer_error(mock_consumer, capsys):
-    
-    # mock_consumer().poll().error.return_value = 'test error'
-    # mock_consumer().poll().value.return_value = 'test message'
-    mock_consumer().poll().side_effect = [
-        'test error',
-        'test message'
-    ]
+
+    mock_consumer().poll().error.return_value = 'test error'
+    mock_consumer().poll().value.return_value = 'test message'
+
     def switch(running):
         time.sleep(.001)
         running['running'] = False
@@ -95,13 +92,8 @@ def test_consumer_error(mock_consumer, capsys):
         if i == '\n':
             break
         output.append(i)
-    assert ''.join(output) == 'Consumer error: test error'
-    assert ''.join(output) == 'Receivied message: test message'
     
 
-
-
-
-
-
-
+    assert ''.join(output) == 'Consumer error: test error'
+    assert ''.join(x) == 'Receivied message: test message'
+    
