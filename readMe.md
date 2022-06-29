@@ -1,5 +1,7 @@
 
 ![Tests](https://github.com/okidijimmy200/chatapp/actions/workflows/build.yaml/badge.svg)
+
+
 A command line chat application that uses message broker services of confluent kafka to send
 messages.
 
