@@ -40,3 +40,5 @@ jobs:
     - name: Test with pytest
       run: |
         pytest
+    - name: Execute tests (Unit and Feature tests) via Pytest
+      run: vendor/bin/pest --coverage-clover clover.xml
