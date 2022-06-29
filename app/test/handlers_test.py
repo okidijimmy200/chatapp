@@ -95,5 +95,4 @@ def test_consumer_error(mock_consumer, capsys):
     
 
     assert ''.join(output) == 'Consumer error: test error'
-    assert ''.join(x) == 'Receivied message: test message'
     
